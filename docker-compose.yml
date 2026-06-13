@@ -1,0 +1,74 @@
+
+# orquestrador dos 3 services em dev
+# conceito: cada service aqui vira um container docker isolado
+# que se comunica com os outros bia rede interna chamada "viali-network"
+
+version: '3.9'
+
+services:
+# Frontend react
+# porta 5173 é padrão Vite em dev
+
+  frontend:
+    build:
+      context: ./frontend # onde está o dockerfile do service
+      dockerfile: Dockerfile
+    container_name: viali-frontend
+    ports:
+      - "5173:5173" # host:container
+    volumes:
+      - ./frontend:/app # hot realod: mudanças locais refletem no container
+      - /app/node_modules # exceção: node_modules fica dentro do container
+    environment:
+      - NODE_ENV=development
+      # url do backend node.js (acessível pelo browser, não pelo container)
+      - VITE_API_URL=http://localhost:3000
+    depends_on:
+      - backend-node # sobe depois do node.js
+    networks:
+      - viali-network
+
+  # Backend node.js (api gateway)
+  # porta 3000
+  backend-node:
+    build:
+      context: ./backend-node
+      dockerfile: Dockerfile
+    container_name: viali-node
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend-node:/app
+      - /app/node_modules
+    env_file:
+      - .env # carrega todas as variaveis do env
+    depends_on:
+      - backend-python # node depende do python para o chatbot
+    networks:
+      - viali-network
+    restart: unless-stopped # reinicia automaticamente se cair
+
+  # Backend python (ia + rag)
+  # porta 8001 para não conflitar com outras aplicações python
+  backend-python:
+    build:
+      context: ./backend-python
+      dockerfile: Dockerfile
+    container_name: viali-python
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./backend-python:/app
+      - ./docs:/app/docs # documentos rag acessiveis pelo python
+    env_file:
+      - .env
+    networks:
+      - viali-network
+    restart: unless-stopped
+
+# rede interna
+# os containers se comincam por nome (ex: http://backend-python:8001)
+# sem expor essas portas para a internet
+networks:
+  viali-network:
+    driver: bridge # rede virtual isolada no host do docker

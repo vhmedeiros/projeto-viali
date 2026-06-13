@@ -1,0 +1,35 @@
+# envs
+.env
+.env.local
+.env.production
+
+# node
+node_modules/
+npm-debug.log*
+
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+
+# react
+frontend/dist/
+frontend/build/
+
+# FAISS index
+backend-python/faiss_index/
+
+# docker
+.docker/
+
+# ides
+.vscode/
+.idea/
+*.swp
+
+# os
+.DS_Store
+Thumbs.db
