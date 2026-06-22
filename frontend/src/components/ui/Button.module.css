@@ -1,0 +1,111 @@
+/* ============================================================
+   Button — CSS Module v2
+   ============================================================ */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-md);
+  /* transition: all substituído por propriedades específicas
+     "all" animava o color também, causando flash no hover */
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base),
+    transform var(--transition-base);
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  border: 2px solid transparent;
+}
+
+/* ---- Tamanhos ---- */
+.sm {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-xs);
+}
+
+.md {
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-sm);
+}
+
+.lg {
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--text-base);
+}
+
+/* ---- Variante Primary ---- */
+.primary {
+  background-color: var(--color-accent);   /* azul base */
+  border-color: var(--color-accent);
+  color: #ffffff;                           /* branco fixo — nunca herda */
+  box-shadow: var(--shadow-md);
+}
+
+.primary:hover {
+  background-color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  color: #ffffff;                           /* repete para garantir */
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.primary:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+  color: #ffffff;
+}
+
+/* ---- Variante Secondary ---- */
+.secondary {
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.secondary:hover {
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* ---- Variante Outline ---- */
+.outline {
+  background-color: transparent;
+  color: var(--color-ink);
+  border-color: var(--color-border-strong);
+}
+
+.outline:hover {
+  background-color: var(--color-ink);
+  color: var(--color-surface);
+  border-color: var(--color-ink);
+}
+
+/* ---- Largura total ---- */
+.fullWidth {
+  width: 100%;
+}
+
+/* ---- Desabilitado ---- */
+.button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* ---- Focus visível ---- */
+.button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}

@@ -1,0 +1,173 @@
+/* ============================================================
+   Header — CSS Module v2
+   ============================================================ */
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  background-color: var(--color-ink);
+  border-bottom: 1px solid transparent;
+  z-index: var(--z-header);
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.scrolled {
+  background-color: rgba(26, 26, 24, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ---- Layout interno ----
+   Mesmo recuo do hero (.content) para o logo alinhar com o texto.
+   Full-bleed: sem max-width/margin auto. */
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 clamp(var(--space-6), 5vw, var(--space-16));
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.logoImg {
+  height: 48px;
+  width: auto;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.navList {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.navLink {
+  color: rgba(255, 255, 255, 0.65);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-sm);
+  letter-spacing: 0.02em;
+  padding: var(--space-2) 0;
+  position: relative;
+  transition: color var(--transition-fast);
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background-color: var(--color-accent);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-base);
+}
+
+.navLink:hover { color: #ffffff; }
+.navLink:hover::after { width: 100%; }
+
+.cta {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.hamburger {
+  display: none;
+  color: #ffffff;
+  padding: var(--space-2);
+  z-index: calc(var(--z-header) + 10);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
+}
+
+.hamburger:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.mobileMenu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 280px;
+  height: 100vh;
+  background-color: var(--color-ink);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  padding: calc(var(--header-height) + var(--space-8)) var(--space-6) var(--space-6);
+  z-index: calc(var(--z-header) + 5);
+  overflow-y: auto;
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.3);
+}
+
+.mobileNavList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.mobileNavLink {
+  display: block;
+  color: rgba(255, 255, 255, 0.65);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--text-base);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.mobileNavLink:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.mobileCta {
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: calc(var(--z-header) + 1);
+}
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+@media (max-width: 768px) {
+  .nav  { display: none; }
+  .cta  { display: none; }
+  .hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .logoImg { height: 40px; }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .navList { gap: var(--space-4); }
+  .navLink { font-size: var(--text-xs); }
+}

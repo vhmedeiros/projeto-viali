@@ -1,0 +1,413 @@
+/* ============================================================
+   VIALI ASSESSORIA CONTÁBIL — DESIGN SYSTEM v2
+   ============================================================
+
+   Design Tokens = variáveis CSS que definem TODA a identidade visual.
+   Qualquer mudança aqui se propaga para o site inteiro.
+
+   Termo técnico: CSS Custom Properties / Design Tokens
+   Analogia Django: é como o settings.py, mas para o visual.
+
+   CHANGELOG v2:
+   - Paleta: substituída por B2 (creme/papel + tinta escura + azul #1A5FA8)
+   - Tipografia: Montserrat removido; DM Serif Display como fonte de display
+   - Fonte de corpo: Inter mantida (legibilidade comprovada, já carregada)
+   - Transições: nomenclatura migrada para duration/ease, alinhada ao framer-motion
+   - Animações CSS (fadeInUp) removidas — framer-motion assume esse papel
+   ============================================================ */
+
+/* ============================================================
+   NOTA: O @import do Google Fonts foi movido para index.html
+   via <link rel="preconnect"> + <link rel="stylesheet">.
+   Termo técnico: Resource Hint — carregamento mais rápido que @import CSS.
+   Inter continua sendo carregada aqui pois não foi movida ainda.
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+/* ============================================================
+   1. DESIGN TOKENS (variáveis globais)
+   ============================================================ */
+:root {
+
+  /* ----------------------------------------------------------
+     PALETA — B2: Creme/papel + tinta escura + azul executivo
+     ----------------------------------------------------------
+     Filosofia: fundo quente tipo papel envelhecido, tipografia
+     preta intensa, azul único como acento — editorial e sóbrio.
+     ---------------------------------------------------------- */
+
+  /* Fundos */
+  --color-bg:       #EDE8DF;   /* Background geral — creme/papel */
+  --color-surface:  #F7F4EE;   /* Superfícies elevadas — cards, navbar, inputs */
+
+  /* Tinta (texto e elementos escuros) */
+  --color-ink:      #1A1A18;   /* Texto principal — quase-preto, mais suave que #000 */
+  --color-ink-muted: #8C8579;  /* Texto secundário — muted, legendas, placeholders */
+
+  /* Acento — azul executivo, compatível com a logo Viali */
+  --color-accent:        #1A5FA8;   /* Azul principal — CTAs, links, destaques */
+  --color-accent-hover:  #175192;   /* Hover do acento — mais escuro */
+  --color-accent-light:  #E8F0FB;   /* Fundo suave do acento — badges, highlights */
+
+  /* Borda */
+  --color-border:        rgba(26, 26, 24, 0.10);  /* Borda padrão — sutil sobre creme */
+  --color-border-strong: rgba(26, 26, 24, 0.20);  /* Borda com mais contraste */
+
+  /* Feedback — mantidos da v1 */
+  --color-success: #2ecc71;
+  --color-error:   #e74c3c;
+  --color-warning: #f39c12;
+
+  /* Retrocompatibilidade — aliases para não quebrar componentes da v1
+     que ainda referenciam as variáveis antigas.
+     Remover progressivamente conforme cada componente for refatorado. */
+  --color-primary:       var(--color-ink);
+  --color-secondary:     var(--color-accent);
+  --color-white:         #ffffff;
+  --color-gray-50:       var(--color-surface);
+  --color-gray-100:      #f1f3f5;
+  --color-gray-200:      #e9ecef;
+  --color-gray-300:      #dee2e6;
+  --color-gray-400:      #ced4da;
+  --color-gray-500:      #adb5bd;
+  --color-gray-600:      var(--color-ink-muted);
+  --color-gray-700:      #495057;
+  --color-gray-800:      #343a40;
+  --color-gray-900:      var(--color-ink);
+
+  /* ----------------------------------------------------------
+     TIPOGRAFIA
+     ----------------------------------------------------------
+     Termo técnico: Type Scale — escala modular de tamanhos
+     baseada em proporção (aqui: razão ~1.25, "Major Third").
+
+     Dois papéis:
+       --font-display → DM Serif Display (carregada no index.html)
+                        Usada SOMENTE em headlines e títulos grandes.
+                        Serifada, elegante, usada com MUITA restrição.
+       --font-body    → Inter (carregada aqui via @import)
+                        Usada em tudo mais: parágrafos, menus, labels.
+     ---------------------------------------------------------- */
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+
+  /* Escala de tamanhos — mantida da v1 (não quebra nada) */
+  --text-xs:   0.75rem;    /* 12px */
+  --text-sm:   0.875rem;   /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg:   1.125rem;   /* 18px */
+  --text-xl:   1.25rem;    /* 20px */
+  --text-2xl:  1.5rem;     /* 24px */
+  --text-3xl:  1.875rem;   /* 30px */
+  --text-4xl:  2.25rem;    /* 36px */
+  --text-5xl:  3rem;       /* 48px */
+  --text-6xl:  3.75rem;    /* 60px */
+
+  /* ----------------------------------------------------------
+     ESPAÇAMENTOS — mantidos da v1, escala de 4px
+     Termo técnico: Spacing Scale / 4-point grid system
+     ---------------------------------------------------------- */
+  --space-1:  0.25rem;   /* 4px  */
+  --space-2:  0.5rem;    /* 8px  */
+  --space-3:  0.75rem;   /* 12px */
+  --space-4:  1rem;      /* 16px */
+  --space-5:  1.25rem;   /* 20px */
+  --space-6:  1.5rem;    /* 24px */
+  --space-8:  2rem;      /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+  --space-20: 5rem;      /* 80px */
+  --space-24: 6rem;      /* 96px */
+
+  /* ----------------------------------------------------------
+     LAYOUT
+     ---------------------------------------------------------- */
+  --max-width:     1320px;
+  --header-height: 80px;
+
+  /* Recuo lateral único do site — distância do conteúdo até a borda.
+   clamp(mín, fluido, máx): 24px no mobile, cresce com a tela, trava em 64px. */
+  --page-gutter: clamp(var(--space-6), 4vw, var(--space-16));
+
+  /* ----------------------------------------------------------
+     BORDAS
+     ---------------------------------------------------------- */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-full: 9999px;
+
+  /* ----------------------------------------------------------
+     SOMBRAS — ajustadas para o fundo creme (v1 usava azul escuro)
+     Termo técnico: Elevation System — camadas de profundidade
+     ---------------------------------------------------------- */
+  --shadow-sm:   0 1px 2px rgba(26, 26, 24, 0.05);
+  --shadow-md:   0 4px 6px rgba(26, 26, 24, 0.07);
+  --shadow-lg:   0 10px 15px rgba(26, 26, 24, 0.10);
+  --shadow-xl:   0 20px 25px rgba(26, 26, 24, 0.10);
+  --shadow-card: 0 4px 20px rgba(26, 26, 24, 0.08);
+
+  /* ----------------------------------------------------------
+     MOVIMENTO — tokens de animação para uso direto no framer-motion
+     e em transições CSS residuais.
+
+     Termo técnico: Motion Tokens / Easing Functions
+     --duration-*  → duração em segundos (framer-motion usa números, não ms)
+     --ease-*      → cubic-bezier para CSS; no framer-motion passar como array:
+                     [0.16, 1, 0.3, 1]
+
+     ease-out-expo → desacelera rapidamente — sensação "física" e elegante,
+                     padrão Apple/Linear. Use para entradas (elementos surgindo).
+     ease-in-out   → acelera e desacelera — para transições de estado (hover, toggle).
+     ---------------------------------------------------------- */
+  --duration-fast:   0.2s;
+  --duration-base:   0.4s;
+  --duration-slow:   0.7s;
+
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:    cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Aliases de retrocompatibilidade para --transition-* da v1 */
+  --transition-fast: var(--duration-fast) var(--ease-in-out);
+  --transition-base: var(--duration-base) var(--ease-in-out);
+  --transition-slow: var(--duration-slow) var(--ease-in-out);
+
+  /* ----------------------------------------------------------
+     Z-INDEX — mantidos da v1
+     Termo técnico: Stacking Context / Z-index Scale
+     ---------------------------------------------------------- */
+  --z-dropdown: 100;
+  --z-header:   200;
+  --z-modal:    300;
+  --z-chatbot:  400;
+  --z-tooltip:  500;
+}
+
+/* ============================================================
+   2. CSS RESET
+   ============================================================
+   Termo técnico: CSS Reset / Box Model Reset
+   Normaliza comportamento padrão entre navegadores.
+   ============================================================ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--color-ink);           /* v2: tinta escura no lugar de gray-800 */
+  /* background-color: var(--color-bg); v2: creme no lugar de branco */
+  background-color: #beabab; /* v2: creme no lugar de branco */
+  overflow-x: hidden;
+}
+
+/* ---- Tipografia base ---- */
+h1, h2, h3, h4, h5, h6 {
+  /* Termo técnico: heading hierarchy
+     IMPORTANTE: --font-body aqui é intencional.
+     A fonte de display (DM Serif Display) é aplicada
+     SELETIVAMENTE via classe .display ou inline nos
+     componentes — não em todos os headings.
+     Isso mantém hierarquia sem exagerar no serif. */
+  font-family: var(--font-body);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-ink);
+}
+
+h1 { font-size: var(--text-5xl); }
+h2 { font-size: var(--text-4xl); }
+h3 { font-size: var(--text-2xl); }
+h4 { font-size: var(--text-xl);  }
+
+p {
+  margin-bottom: var(--space-4);
+  color: var(--color-ink-muted); /* v2: muted no lugar de gray-700 */
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  outline: none;
+}
+
+/* ============================================================
+   3. CLASSE UTILITÁRIA DE DISPLAY
+   ============================================================
+   Termo técnico: Utility Class / Single-responsibility class
+
+   Aplicar .display em qualquer elemento que deve usar
+   DM Serif Display. Mantém o controle explícito sobre
+   onde a fonte serifada aparece.
+
+   Exemplo de uso no JSX:
+     <h1 className="display">Título principal</h1>
+     <span className="display" style={{fontStyle: 'italic'}}>destaque</span>
+   ============================================================ */
+.display {
+  font-family: var(--font-display);
+  font-weight: 400; /* DM Serif Display só tem peso 400 — não forçar bold */
+}
+
+/* ============================================================
+   4. CLASSES UTILITÁRIAS GERAIS
+   ============================================================ */
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+.section {
+  padding: var(--space-20) 0;
+}
+
+/* v2: fundo alternado usa --color-surface no lugar de gray-50 */
+.section--alt {
+  background-color: var(--color-surface);
+}
+
+/* v2: seção escura usa --color-ink no lugar de --color-primary */
+.section--dark {
+  background-color: var(--color-ink);
+  color: var(--color-bg);
+}
+
+.section--dark h2,
+.section--dark h3,
+.section--dark h4 {
+  color: var(--color-bg);
+}
+
+.section--dark p {
+  color: var(--color-ink-muted);
+}
+
+.section__title {
+  text-align: center;
+  margin-bottom: var(--space-4);
+}
+
+.section__subtitle {
+  text-align: center;
+  font-size: var(--text-lg);
+  color: var(--color-ink-muted);
+  max-width: 600px;
+  margin: 0 auto var(--space-12);
+}
+
+/* v2: accent-bar usa --color-accent (azul) no lugar do dourado da v1 */
+.accent-bar {
+  display: inline-block;
+  width: 40px;
+  height: 2px;
+  background-color: var(--color-accent);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-4);
+}
+
+.text-accent {
+  color: var(--color-accent);
+}
+
+.text-muted {
+  color: var(--color-ink-muted);
+}
+
+/* Retrocompatibilidade — .text-secondary da v1 */
+.text-secondary {
+  color: var(--color-accent);
+}
+
+/* ---- Acessibilidade ---- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   5. RESPONSIVIDADE — Mobile First
+   ============================================================
+   Termo técnico: Mobile-First / Progressive Enhancement
+   ============================================================ */
+@media (max-width: 768px) {
+  h1 { font-size: var(--text-3xl); }
+  h2 { font-size: var(--text-2xl); }
+  h3 { font-size: var(--text-xl);  }
+
+  .section {
+    padding: var(--space-12) 0;
+  }
+
+  .container {
+    padding: 0 var(--space-4);
+  }
+}
+
+/* ============================================================
+   REMOVIDO DA v1:
+   - @keyframes fadeInUp e .animate-fade-in-up / .animate-delay-*
+     → substituídos por framer-motion (whileInView + variants)
+   - --font-heading / Montserrat
+     → substituído por --font-display / DM Serif Display
+   - --color-accent (dourado #d4a843)
+     → substituído pelo azul #1A5FA8 via --color-accent
+   ============================================================ */

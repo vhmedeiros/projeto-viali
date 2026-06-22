@@ -1,0 +1,62 @@
+/* ============================================================
+   SectionTitle — CSS Module v2
+   ============================================================
+   Mudanças da v1:
+   - Barra dourada removida — substituída por eyebrow textual
+   - Título: DM Serif Display via classe .display (global.css)
+   - Cores: migradas para tokens v2
+   ============================================================ */
+
+.wrapper {
+  margin-bottom: var(--space-12);
+}
+
+.center { text-align: center; }
+.left   { text-align: left;   }
+
+/* Eyebrow — igual ao do Hero para consistência entre seções */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: var(--space-3);
+}
+
+/* Título — DM Serif Display aplicada via classe .display do global.css
+   font-weight: 400 pois DM Serif só tem esse peso */
+.title {
+  font-size: clamp(var(--text-3xl), 4vw, var(--text-4xl));
+  font-weight: 400;
+  color: var(--color-ink);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-4);
+}
+
+/* Destaque em itálico — DM Serif Display itálico nativo */
+.highlight {
+  font-style: italic;
+  color: var(--color-accent);
+}
+
+/* Subtítulo */
+.subtitle {
+  font-size: var(--text-lg);
+  color: var(--color-ink-muted);
+  line-height: 1.6;
+  max-width: 560px;
+  margin-top: var(--space-2);
+}
+
+.center .subtitle {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 768px) {
+  .title    { font-size: var(--text-2xl); }
+  .subtitle { font-size: var(--text-base); }
+}

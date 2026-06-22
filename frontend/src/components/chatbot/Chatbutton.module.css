@@ -1,0 +1,29 @@
+/* ============================================================
+   ChatButton — CSS Module (OCULTO por enquanto)
+   ============================================================ */
+
+.button {
+  position: fixed;
+  bottom: 92px;   /* acima do WhatsApp (24px + 56px + 12px de gap) */
+  right: 24px;
+  z-index: var(--z-chatbot);
+
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+
+  background-color: var(--color-accent);
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+
+  /* Glassmorphism sutil — igual ao WhatsApp */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}

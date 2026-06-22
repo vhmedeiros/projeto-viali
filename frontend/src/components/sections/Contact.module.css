@@ -1,0 +1,127 @@
+/* ============================================================
+   Contact Section — CSS Module v2 (simplificado)
+   ============================================================
+   Layout: coluna única centralizada — sem formulário.
+   Fundo escuro (--color-ink) para contrastar com seções claras.
+   ============================================================ */
+
+.contact {
+  background-color: var(--color-ink);
+}
+
+/* Coluna única centralizada com largura máxima */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-10);
+  margin-top: var(--space-12);
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* Chamada emocional */
+.callout {
+  font-size: var(--text-lg);
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+/* Lista de dados de contato — grid 2x2 em desktop */
+.infoList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  width: 100%;
+  text-align: left;
+}
+
+.infoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.infoIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent);
+  font-size: var(--text-base);
+  flex-shrink: 0;
+}
+
+.infoLabel {
+  display: block;
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-1);
+}
+
+.infoValue {
+  display: block;
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.infoValue:hover {
+  color: var(--color-accent);
+}
+
+/* Linha inferior: horário + botão CTA */
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: var(--space-8);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  gap: var(--space-6);
+}
+
+.hours {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  text-align: left;
+}
+
+.hoursLabel {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.hoursValue {
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+@media (max-width: 640px) {
+  .infoList {
+    grid-template-columns: 1fr;
+  }
+
+  .bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

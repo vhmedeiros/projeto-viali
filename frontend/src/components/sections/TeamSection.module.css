@@ -1,0 +1,106 @@
+/* ============================================================
+   TeamSection — CSS Module
+   ============================================================
+   2 cards lado a lado em desktop, stack em mobile.
+   Fundo alternado (--color-surface) para criar ritmo entre seções.
+   ============================================================ */
+
+.team {
+  background-color: var(--color-surface);
+}
+
+/* Grid de 2 colunas — com 2 pessoas fica sempre simétrico */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  margin-top: var(--space-12);
+}
+
+/* ---- Card ---- */
+.card {
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow var(--transition-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---- Foto ---- */
+/*
+  Wrapper com aspect-ratio 4/3 — a foto sempre ocupa
+  a mesma proporção independente do tamanho original.
+  Termo técnico: Aspect Ratio Box com object-fit cover
+*/
+.photoWrapper {
+  width: 100%;
+  aspect-ratio: 4 / 3; /* aqui eu ajusto o tanto de zoom*/
+  overflow: hidden;
+  background-color: var(--color-bg);
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;  /* prioriza o rosto */
+  display: block;
+  transition: transform var(--transition-slow);
+}
+
+/* .card:hover .photo {
+  transform: scale(1.03);  // zoom sutil no hover 
+} 
+*/
+
+/* ---- Informações ---- */
+.info {
+  padding: var(--space-6) var(--space-8) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  color: var(--color-ink);
+  line-height: 1.2;
+}
+
+.role {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--space-2);
+}
+
+.bio {
+  font-size: var(--text-base);
+  color: var(--color-ink-muted);
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

@@ -1,0 +1,55 @@
+/* ============================================================
+   Services Section — CSS Module v2
+   ============================================================
+   Mudanças da v1:
+   - Fundo: --color-surface (creme claro) no lugar de gray-50
+   - Grid: auto-fit minmax no lugar de repeat(3, 1fr) fixo
+   - 7º card: centralizado automaticamente pelo auto-fit
+   ============================================================ */
+
+.services {
+  background-color: var(--color-surface);
+}
+
+/*
+  auto-fit + minmax: o browser calcula quantas colunas cabem.
+  Com minmax(300px, 1fr):
+    - Desktop largo: 3 colunas (3 × 300px = 900px + gaps cabe em 1200px)
+    - Tablet: 2 colunas
+    - Mobile: 1 coluna
+  O 7º card sozinho na última linha ocupa 1fr — fica à esquerda.
+  Para centralizar o card ímpar usamos o truque de ::after abaixo.
+
+  Termo técnico: Intrinsic Grid Layout com auto-fit
+*/
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-12);
+}
+
+/*
+  Truque do card ímpar centralizado:
+  ::after adiciona um elemento fantasma com o mesmo minmax
+  que "empurra" o último card para o centro quando sobra 1 na linha.
+  Termo técnico: Ghost Element / Pseudo-element Grid Trick
+*/
+.grid::after {
+  content: '';
+  grid-column: span 1;
+  min-width: 300px;
+  max-width: 1fr;
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  /* Remove o ghost em mobile — desnecessário em coluna única */
+  .grid::after {
+    display: none;
+  }
+}

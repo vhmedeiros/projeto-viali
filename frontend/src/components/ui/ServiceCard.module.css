@@ -1,0 +1,90 @@
+/* ============================================================
+   ServiceCard — CSS Module v2
+   ============================================================
+   Mudanças da v1:
+   - Fundo: --color-surface no lugar de white puro
+   - Borda: --color-border sutil no lugar de gray-200
+   - Ícone: fundo accent-light no lugar de gradiente navy
+   - Hover: controlado pelo framer-motion (cardHover variant)
+             box-shadow CSS apenas como estado base
+   - Removida lista de features (.features, .featureItem, .checkIcon)
+   ============================================================ */
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* Transição de borda no hover — framer-motion cuida do resto */
+  transition: border-color var(--transition-base);
+  cursor: default;
+}
+
+.card:hover {
+  border-color: var(--color-accent);
+}
+
+/* ---- Ícone ---- */
+/*
+  Fundo: --color-accent-light (azul muito claro, quase branco azulado)
+  Ícone: --color-accent (azul executivo)
+  Tamanho generoso (56px) para respirar bem dentro do card.
+*/
+.iconWrapper {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent);
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-5);
+  flex-shrink: 0;
+}
+
+/* ---- Título ---- */
+.title {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: var(--space-3);
+  line-height: 1.3;
+}
+
+/* ---- Descrição ---- */
+.description {
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+  line-height: 1.7;
+  margin-bottom: 0;
+  flex: 1;   /* empurra o CTA para o fundo do card */
+}
+
+/* ---- Link de ação ---- */
+/*
+  Posicionado no fundo do card via flex + margin-top: auto.
+  Cor de acento, sem sublinhado padrão — sublinhado só no hover.
+  Termo técnico: Inline CTA / Text Link
+*/
+.cta {
+  display: inline-block;
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  width: 100%;
+}
+
+.cta:hover {
+  color: var(--color-accent-hover);
+}

@@ -1,1 +1,40 @@
 
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+      args:
+        VITE_API_URL: /api      # mesma origem; o Caddy roteia /api → node
+    container_name: viali-frontend
+    restart: unless-stopped
+    networks: [web]             # só o Caddy precisa alcançar o front
+
+  backend-node:
+    build:
+      context: ./backend-node
+      dockerfile: Dockerfile
+    container_name: viali-node
+    env_file: [.env]
+    environment:
+      - NODE_ENV=production
+    depends_on: [backend-python]
+    restart: unless-stopped
+    networks: [web, viali-network]   # web p/ o Caddy, viali-network p/ falar com o python
+
+  backend-python:
+    build:
+      context: ./backend-python
+      dockerfile: Dockerfile
+    container_name: viali-python
+    env_file: [.env]
+    volumes:
+      - ./docs:/app/docs:ro
+    restart: unless-stopped
+    networks: [viali-network]    # interno; só o node conversa com ele
+
+networks:
+  viali-network:
+    driver: bridge
+  web:
+    external: true

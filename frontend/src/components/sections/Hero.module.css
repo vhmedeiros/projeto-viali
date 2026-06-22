@@ -1,0 +1,178 @@
+/* ============================================================
+   Hero Section — CSS Module v2
+   ============================================================ */
+
+.hero {
+  display: grid;
+  grid-template-columns: 55fr 45fr;
+  min-height: 100vh;
+  padding-top: var(--header-height);
+  background-color: var(--color-bg);
+  overflow: hidden;
+  position: relative;
+}
+
+/* ---- Coluna esquerda: conteúdo ----
+   Recuo esquerdo = clamp(24px, 5vw, 64px). Mesmo valor do header
+   (.headerInner) para o logo alinhar com o texto. Ajuste o último
+   token (var(--space-16) = 64px) pra mais/menos respiro. */
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--space-20) var(--space-12) var(--space-20) clamp(var(--space-6), 5vw, var(--space-16));
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: var(--space-4);
+}
+
+.title {
+  font-size: clamp(var(--text-4xl), 5vw, var(--text-6xl));
+  font-weight: 400;
+  color: var(--color-ink);
+  line-height: 1.1;
+  margin-bottom: var(--space-6);
+  letter-spacing: -0.02em;
+}
+
+.titleEmphasis {
+  font-style: italic;
+  color: var(--color-accent);
+}
+
+.subtitle {
+  font-size: var(--text-lg);
+  color: var(--color-ink-muted);
+  line-height: 1.7;
+  margin-bottom: var(--space-10);
+  max-width: 520px;
+}
+
+.subtitle strong {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-16);
+}
+
+.stats {
+  display: flex;
+  gap: var(--space-10);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--color-border);
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.statIcon {
+  color: var(--color-accent);
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-1);
+}
+
+.statValue {
+  font-family: var(--font-body);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-ink);
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: var(--text-xs);
+  color: var(--color-ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.imageWrapper {
+  position: relative;
+  overflow: hidden;
+  min-height: 500px;
+  clip-path: polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.imageWrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(to right, var(--color-bg) 0%, transparent 100%);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-accent);
+  opacity: 0.25;
+  mix-blend-mode: multiply;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+@media (max-width: 1024px) {
+  .hero {
+    grid-template-columns: 1fr 1fr;
+  }
+  .content {
+    padding: var(--space-16) var(--space-8);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 40vh;
+    min-height: auto;
+    padding-top: var(--header-height);
+  }
+  .content {
+    padding: var(--space-12) var(--space-4);
+    order: 1;
+  }
+  .imageWrapper {
+    order: 2;
+    min-height: 0;
+    clip-path: none;
+  }
+  .title { font-size: var(--text-3xl); }
+  .subtitle { font-size: var(--text-base); max-width: 100%; }
+  .actions { flex-direction: column; align-items: flex-start; }
+  .stats { gap: var(--space-6); }
+  .statValue { font-size: var(--text-xl); }
+}
+
+@media (max-width: 480px) {
+  .stats { flex-wrap: wrap; gap: var(--space-6); }
+}
