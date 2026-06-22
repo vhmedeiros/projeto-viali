@@ -65,16 +65,16 @@ export default function Hero() {
             h1 deve ser único por página — impacto direto em SEO.
             Copy focado na DOR: "multa", "malha fina", "tempo perdido" */}
         <motion.h1 className={`${styles.title} display`} variants={fadeUp}>
-          Chega de perder{' '}
-          <em className={styles.titleEmphasis}>tempo e dinheiro</em>{' '}
-          com contabilidade.
+          Mais do que números,{' '}
+          <em className={styles.titleEmphasis}>cuidamos do que move</em>{' '}
+          o seu negócio.
         </motion.h1>
 
         {/* Subtítulo — proposta de valor como solução para a dor
             Menciona explicitamente os riscos que o cliente quer evitar */}
         <motion.p className={styles.subtitle} variants={fadeUp}>
-          Multas, malha fina e obrigações fiscais em atraso custam caro.
-          A Viali cuida de tudo isso para você focar no que realmente importa:{' '}
+          Assessoria contábil completa em Brasília. Da Abertura da sua empresa
+          à gestão fiscal, cuidamos de tudo para você focar no que importa:{' '}
           <strong>fazer a sua empresa crescer.</strong>
         </motion.p>
 
