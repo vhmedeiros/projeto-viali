@@ -14,6 +14,7 @@
 
 import { motion } from 'framer-motion'
 import { FiArrowRight } from 'react-icons/fi'
+import heroImg from '../../assets/hero.png'
 import { FaBuilding, FaCalendarAlt, FaUsers, FaWhatsapp } from 'react-icons/fa'
 import Button from '../ui/Button'
 import {
@@ -133,7 +134,7 @@ export default function Hero() {
         <div className={styles.imageOverlay} aria-hidden="true" />
 
         <img
-          src="/src/assets/hero.png"
+          src={heroImg}
           alt="Escritório da Viali Assessoria Contábil em Brasília-DF"
           className={styles.image}
         />

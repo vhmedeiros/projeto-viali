@@ -835,3 +835,161 @@ Cliente recebe a resposta JSON
 
 > **Desenvolvido com ⚡ para a Viali Assessoria Contábil**
 > *Backend Node.js + Express | API REST | Docker containerizado*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Backend Node — API Gateway (Viali)
+
+Serviço em **Node.js 20 + Express** que atua como **API Gateway / BFF (Backend For
+Frontend)**: é a única porta de entrada do frontend. Ele valida requisições,
+orquestra o serviço de IA (Python), consulta APIs externas, persiste dados no
+Cosmos DB e dispara e-mails.
+
+> Faz parte do monorepo da Viali. Veja o `README.md` da raiz para a visão geral.
+
+---
+
+## Stack
+
+| Item            | Tecnologia            |
+| --------------- | --------------------- |
+| Runtime         | Node.js 20            |
+| Framework       | Express               |
+| HTTP client     | axios                 |
+| IDs             | uuid                  |
+| CORS            | cors                  |
+
+---
+
+## Estrutura
+
+```
+backend-node/src/
+├── index.js              # bootstrap do Express (middlewares + rotas + handlers)
+├── routes/
+│   ├── health.js         # GET  /api/health
+│   ├── chat.js           # POST /api/chat
+│   ├── contato.js        # POST /api/contato
+│   ├── cnpj.js           # GET  /api/cnpj/:cnpj
+│   └── cep.js            # GET  /api/cep/:cep
+├── services/
+│   ├── cosmosdb.js       # persistência (conversas e leads)
+│   └── email.js          # envio via Resend
+└── config/
+    └── features.js       # feature flags (ex.: chatbot on/off)
+```
+
+> Em Express, um `Router` é um mini-app isolado para um grupo de rotas — análogo
+> ao `include()` no `urls.py` do Django.
+
+---
+
+## Rotas
+
+| Método | Rota               | Descrição                                                       |
+| ------ | ------------------ | --------------------------------------------------------------- |
+| GET    | `/api/health`      | Health check (status, ambiente, uptime, feature flags)          |
+| POST   | `/api/chat`        | Recebe a pergunta, encaminha ao Python, salva a conversa        |
+| POST   | `/api/contato`     | Valida e salva o lead, dispara e-mails (notificação + confirmação) |
+| GET    | `/api/cnpj/:cnpj`  | Consulta dados de empresa em `publica.cnpj.ws`                  |
+| GET    | `/api/cep/:cep`    | Consulta endereço na ViaCEP                                     |
+
+### Exemplos
+
+```bash
+curl http://localhost:3000/api/health
+curl http://localhost:3000/api/cnpj/00000000000191
+curl http://localhost:3000/api/cep/70610410
+curl -X POST http://localhost:3000/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"pergunta": "Como abrir uma empresa em Brasília?"}'
+```
+
+---
+
+## Rodando
+
+### Via Docker (junto do stack, a partir da raiz)
+
+```bash
+docker-compose up --build
+# API em http://localhost:3000
+```
+
+### Standalone
+
+```bash
+cd backend-node
+npm install
+npm run dev   # nodemon
+```
+
+---
+
+## Variáveis de ambiente relevantes
+
+| Variável                     | Descrição                                      |
+| ---------------------------- | ---------------------------------------------- |
+| `PORT`                       | Porta do servidor (padrão 3000)                |
+| `NODE_ENV`                   | `development` / `production`                   |
+| `PYTHON_SERVICE_URL`         | URL interna do serviço de IA                   |
+| `COSMOS_DB_*`                | Credenciais e nomes de containers do Cosmos DB |
+| `RESEND_API_KEY`             | Chave da API do Resend                         |
+| `EMAIL_TO` / `EMAIL_FROM`    | Destinatário e remetente dos e-mails           |
+| `CHATBOT_ENABLED`            | Feature flag do chatbot                        |
+
+---
+
+## Padrões técnicos aplicados
+
+- **API Gateway / BFF** — ponto único de entrada; o frontend nunca fala direto
+  com o Python nem com APIs externas.
+- **API Proxy** — CNPJ e CEP são consultados pelo backend (inclui headers de
+  navegador para passar pelo Cloudflare na API de CNPJ).
+- **DTO / Response Shaping** — respostas externas são remodeladas para um formato
+  estável (isola o frontend de mudanças das APIs).
+- **Input sanitization & validation** — limpeza (regex) e validação de CNPJ, CEP,
+  e-mail e campos do formulário antes de processar.
+- **Fire-and-forget** — a conversa é salva no Cosmos em paralelo, sem atrasar a
+  resposta ao usuário.
+- **Tratamento de erros granular** — distingue timeout, conexão recusada, rate
+  limit (429), 403 do Cloudflare, etc., devolvendo o status HTTP adequado.
+- **Feature flags** — liga/desliga funcionalidades por variável de ambiente.
+
+> Analogias com Django: as `routes` equivalem a *views*; `services` a funções de
+> domínio; o error handler global a um middleware de exception handling.
